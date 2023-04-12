@@ -68,7 +68,7 @@ class Recommender:
         songs_with_tags['TotalSimilarity'] = (songs_with_tags.MetaSim + songs_with_tags.TagSim) / 2
 
         # Sort by total similarity and get n best recommendations. Cast results into tuple.
-        recs = [Recommendation(song_id=r.BeatMapId, difficulty=r.Difficulty, characteristic=r.Characteristic,
+        recs = [Recommendation(song_id=r.BeatMapId, map_name=r.MapName, cover_url=r.CoverUrl, uploader_name=r.UploaderName, difficulty=r.Difficulty, characteristic=r.Characteristic,
                                meta_sim=r.MetaSim, tag_sim=r.TagSim, total_sim=r.TotalSimilarity)
                 for r in songs_with_tags.sort_values(by='TotalSimilarity').itertuples() if
                 r.BeatMapId != song_id]
@@ -79,6 +79,9 @@ class Recommender:
     def get_songs(self, dataset_path):
         songs = pd.read_csv(dataset_path, delimiter=',')
         songs.BeatMapId = songs.BeatMapId.astype('string')
+        songs.UploaderName = songs.UploaderName.astype('string')
+        songs.MapName = songs.MapName.astype('string')
+        songs.CoverUrl = songs.CoverUrl.astype('string')
         songs.IsRanked = songs.IsRanked.astype(int)
         songs.IsCurated = songs.IsCurated.astype(int)
         songs.HasChroma = songs.HasChroma.astype(int)
