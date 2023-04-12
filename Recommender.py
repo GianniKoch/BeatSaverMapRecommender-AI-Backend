@@ -29,7 +29,7 @@ class Recommender:
         songs = self.songs
 
         # Columns that are not used for metadata recommendation.
-        non_meta_columns = ['BeatMapId', 'UploaderName', 'Tags', 'TagSim']
+        non_meta_columns = ['BeatMapId', 'UploaderName', 'MapName', 'CoverUrl', 'Tags', 'TagSim']
 
         # Get tags and add the uploader as tag of the given song by song_id and difficulty.
         compare_tags = songs.loc[songs.BeatMapId == song_id].loc[songs.Difficulty == difficulty].loc[
@@ -59,6 +59,9 @@ class Recommender:
 
         # Restore the original data.
         songs_with_tags['BeatMapId'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].BeatMapId
+        songs_with_tags['MapName'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].MapName
+        songs_with_tags['CoverUrl'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].CoverUrl
+        songs_with_tags['UploaderName'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].UploaderName
         songs_with_tags['Difficulty'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].Difficulty
         songs_with_tags['Characteristic'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].Characteristic
         songs_with_tags['TagSim'] = songs.loc[songs.TagSim.isin(vals[:n_best_tags])].TagSim
